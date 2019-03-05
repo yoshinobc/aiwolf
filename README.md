@@ -4,3 +4,4 @@
 エージェントの実行には，./Autostarter.shを実行した後，python3 DQN.py -h localhost -p 10000を実行してください．
 また，実行にはtensorflow,pandasが必要です．
 このエージェントにはHarada　Kei氏のAIWolfPyが使われています．
+Autostarter.iniを変更することで任意のエージェントに対して学習を行うことができます．
