@@ -73,14 +73,14 @@ class SampleAgent(object):
             self.reward = 0
 
     def update(self, base_info, diff_data, request):
-        print(self.day,"update")
+        #print(self.day,"update")
         self.base_info = base_info
         self.diff_data = diff_data
         self.statusMap = base_info["statusMap"]
         if len(diff_data) == 0 or not self.islearn:
-            print(self.day,"return")
+            #print(self.day,"return")
             return
-        print(diff_data,request)
+        #print(diff_data,request)
         if diff_data["type"][0] == "whisper":
             #print("whisper")
             whisperlist = np.array([diff_data["agent"],diff_data["text"]])
@@ -164,7 +164,7 @@ class SampleAgent(object):
                     self.stateIsAlive[diff_data["agent"][i]-1] = 20 + self.day
 
     def whisper(self):
-        print(self.day,"whisperchat")
+        #print(self.day,"whisperchat")
         if self.whisper_count == 0:
             self.whisper_count += 1
             return cb.attack(self.atackaction)
