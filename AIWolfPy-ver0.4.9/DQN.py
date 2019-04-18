@@ -18,7 +18,7 @@ myname = 'cash_dqn'
 import aiwolfpy.ql
 code = {"WEREWOLF":1,"VILLAGER":2,"SEER":3,"POSSESSED":4,"BODYGUARD":5,"MEDIUM":6,"ANY":7,"HUMAN":8,"SELF":9}
 thisRole = "VILLAGER"
-rounds = 1000000
+rounds = 10000
 class SampleAgent(object):
 
     def __init__(self, agent_name):

@@ -8,7 +8,7 @@ import random
 MAXSIZE = 4500000
 INITIAL_REPLAY = 200
 GAMMA = 0.99
-EXPLORE = 180000
+EXPLORE = 10000
 BATCH_SIZE = 128
 UPDATE_STEP = 8
 FINALE_EPSILON = 0.2
@@ -28,11 +28,6 @@ class DeepQNetwork:
             self.step = pickle.load(open("kil_rate_step","rb+"))
         else:
             self.step = 0
-        if (os.path.exists("kill_rate_states")):
-            self.states = pickle.load(open("kill_rate_states","rb+"))
-            print("ok")
-        else:
-            self.states = set()
         if(os.path.exists("kill_rate_loss")):
             self.lossValue = pickle.load(open("kill_rate_loss", 'rb+'))
         else:
@@ -106,8 +101,6 @@ class DeepQNetwork:
 
     def update_DQN(self,state,nextobservationaction,action,reward,terminal,gamecount):
         self.buffer.append((state,action,reward,nextobservationaction,terminal))
-        self.states.add(str(state))
-        self.states.add(str(nextobservationaction))
         if len(self.buffer) > MAXSIZE:
             self.buffer.popleft()
         if self.step > INITIAL_REPLAY and (self.step - INITIAL_REPLAY) % UPDATE_STEP == 0:
@@ -120,23 +113,19 @@ class DeepQNetwork:
         f = open("kill_rate_log.txt","a")
 
         if self.step <= INITIAL_REPLAY:
-            print("step :",self.step," gamecount :",gamecount," states:",len(self.states))
+            print("step :",self.step," gamecount :",gamecount)
             f.write(str("step :"))
             f.write(str(self.step))
             f.write(" gamecount :")
             f.write(str(gamecount))
-            f.write(" states:")
-            f.write(str(len(self.states)))
             f.write("\n")
             #f.write(str("step :",self.step," gamecount :",gamecount," states :",len(self.states)))
         else:
-            print("step :",self.step," gamecount :",gamecount," states:",len(self.states),"loss",self.lossValue,"epsilon",self.epsilon)
+            print("step :",self.step," gamecount :",gamecount,"loss",self.lossValue,"epsilon",self.epsilon)
             f.write(str("step :"))
             f.write(str(self.step))
             f.write(" gamecount :")
             f.write(str(gamecount))
-            f.write(" states:")
-            f.write(str(len(self.states)))
             f.write(" loss :")
             f.write(str(self.lossValue))
             f.write("\n")
@@ -196,7 +185,6 @@ class DeepQNetwork:
     def finish(self):
         #if self.step % 1000 == 0:
         pickle.dump(self.buffer,open("kill_rate_replayMemory","wb+"))
-        pickle.dump(self.states,open("kill_rate_states","wb+"))
         pickle.dump(self.step,open("kill_rate_step","wb+"))
         pickle.dump(self.lossValue,open("kill_rate_loss","wb+"))
         #pickle.dump(self.buffer,open(self.role + "_" + self.act + "_replayMemory","wb+"))
